@@ -2,4 +2,4 @@
 
 package main
 
-const webpBin = "bin/linux/bin/cwebp"
+const cWebpBin = "bin/linux/bin/cwebp"

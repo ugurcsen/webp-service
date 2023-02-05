@@ -2,4 +2,4 @@
 
 package main
 
-const webpBin = "bin/windows/bin/cwebp.exe"
+const cWebpBin = "bin/windows/bin/cwebp.exe"

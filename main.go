@@ -13,13 +13,22 @@ import (
 )
 
 func main() {
+	os.RemoveAll("./cache")
+	os.Mkdir("./cache", 0755)
 	app := iris.New()
 	app.Get("/", webpConverter)
-	app.Listen(":8080")
+	app.Listen(":8081")
 }
 
 func webpConverter(ctx iris.Context) {
 	hash := GetMD5Hash(ctx.Request().URL.RawQuery)
+
+	if _, err := os.Stat("./cache/" + hash); err == nil {
+		ctx.ContentType("image/webp")
+		ctx.ServeFile("./cache/"+hash, true)
+		return
+	}
+
 	url := ctx.URLParams()["url"]
 	if url == "" {
 		ctx.StatusCode(iris.StatusBadRequest)
@@ -41,7 +50,7 @@ func webpConverter(ctx iris.Context) {
 		throwInternalError(ctx, err)
 		return
 	}
-	getImageFromUrl(url, temp)
+	err = getImageFromUrl(url, temp)
 	if err != nil {
 		throwInternalError(ctx, err)
 		return
