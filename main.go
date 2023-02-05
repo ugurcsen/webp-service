@@ -22,10 +22,8 @@ func main() {
 
 func webpConverter(ctx iris.Context) {
 	hash := GetMD5Hash(ctx.Request().URL.RawQuery)
-
-	if _, err := os.Stat("./cache/" + hash); err == nil {
-		ctx.ContentType("image/webp")
-		ctx.ServeFile("./cache/"+hash, true)
+	ctx.ContentType("image/webp")
+	if ctx.ServeFile("./cache/"+hash, true) == nil {
 		return
 	}
 
@@ -77,7 +75,6 @@ func webpConverter(ctx iris.Context) {
 		return
 	}
 
-	ctx.Header("Content-Type", "image/webp")
 	ctx.StreamWriter(func(w io.Writer) bool {
 		mWriter := io.MultiWriter(w, f)
 		_, err := io.Copy(mWriter, out)
