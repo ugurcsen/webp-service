@@ -3,7 +3,7 @@ VWEBP(1)                                                              VWEBP(1)
 
 
 NAME
-       vwebp  decompress a WebP file and display it in a window
+       vwebp - decompress a WebP file and display it in a window
 
 SYNOPSIS
        vwebp [options] input_file.webp
@@ -15,64 +15,79 @@ DESCRIPTION
        OpenGL.
 
 OPTIONS
-      h     Print usage summary.
+       -h     Print usage summary.
 
-      version
+       -version
               Print version number and exit.
 
-      noicc Dont use the ICC profile if present.
+       -noicc Don't use the ICC profile if present.
 
-      nofancy
-              Dont use the fancy YUV420 upscaler.
+       -nofancy
+              Don't use the fancy YUV420 upscaler.
 
-      nofilter
-              Disable inloop filtering.
+       -nofilter
+              Disable in-loop filtering.
 
-      dither strength
+       -dither strength
               Specify a dithering strength between 0 and 100. Dithering  is  a
-              postprocessing  effect  applied  to  chroma components in lossy
-              compression.  It helps by smoothing gradients and avoiding band
+              post-processing  effect  applied  to  chroma components in lossy
+              compression.  It helps by smoothing gradients and avoiding band-
               ing artifacts. Default: 50.
 
-      mt    Use multithreading for decoding, if possible.
+       -noalphadither
+              By  default,  quantized  transparency planes are dithered during
+              decompression, to smooth the gradients. This flag  will  prevent
+              this dithering.
 
-      info  Display image information on top of the decoded image.
+       -usebgcolor
+              Fill transparent areas with the bitstream's own background color
+              instead of checkerboard only. Default is white for  non-animated
+              images.
 
-      string
+       -mt    Use multi-threading for decoding, if possible.
+
+       -info  Display image information on top of the decoded image.
+
+       -- string
               Explicitly  specify the input file. This option is useful if the
-              input file starts with an  for  instance.  This  option  must
+              input file starts with an '-' for  instance.  This  option  must
               appear  last.   Any  other options afterward will be ignored. If
-              the input file is "", the data will be read from stdin  instead
+              the input file is "-", the data will be read from stdin  instead
               of a file.
 
 
 
        KEYBOARD SHORTCUTS
 
-      c   Toggle use of color profile.
+       'c'    Toggle use of color profile.
 
-      i   Overlay file information.
+       'b'    Toggle display of background color.
 
-      q/Q/ ESC
+       'i'    Overlay file information.
+
+       'd'    Disable blending and disposal process, for debugging purposes.
+
+       'q' / 'Q' / ESC
               Quit.
 
 
 BUGS
-       Please     report     all     bugs     to     our     issue    tracker:
-       http://code.google.com/p/webp/issues
-       Patches welcome! See this  page  to  get  started:  http://www.webmpro
-       ject.org/code/contribute/submittingpatches/
+       Please     report     all     bugs     to     the     issue    tracker:
+       https://bugs.chromium.org/p/webp
+       Patches welcome! See this page  to  get  started:  https://www.webmpro-
+       ject.org/code/contribute/submitting-patches/
 
 
 EXAMPLES
        vwebp picture.webp
-       vwebp picture.webp mt dither 0
-       vwebp  picture.webp
+       vwebp picture.webp -mt -dither 0
+       vwebp -- ---picture.webp
 
 
 AUTHORS
-       vwebp was written by the WebP team.
-       The latest source tree is available at http://www.webmproject.org/code
+       vwebp is a part of libwebp and was written by the WebP team.
+       The   latest  source  tree  is  available  at  https://chromium.google-
+       source.com/webm/libwebp
 
        This manual page was written for the Debian project (and may be used by
        others).
@@ -80,9 +95,9 @@ AUTHORS
 
 SEE ALSO
        dwebp(1)
-       Please refer to http://developers.google.com/speed/webp/ for additional
-       information.
+       Please  refer  to  https://developers.google.com/speed/webp/  for addi-
+       tional information.
 
 
 
-                                 July 23, 2014                        VWEBP(1)
+                               November 17, 2021                      VWEBP(1)

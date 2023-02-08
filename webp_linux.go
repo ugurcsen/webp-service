@@ -1,5 +1,5 @@
-//go:build linux
+//go:build linux && amd64
 
 package main
 
-const cWebpBin = "bin/linux/bin/cwebp"
+const cWebpBin = "./bin/linux/bin/cwebp"

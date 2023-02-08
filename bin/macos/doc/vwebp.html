@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.19.2 -->
-<!-- CreationDate: Fri Sep 19 17:51:07 2014 -->
+<!-- CreationDate: Mon Dec 19 16:43:06 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -122,6 +122,21 @@ post-processing effect applied to chroma components in lossy
 compression. It helps by smoothing gradients and avoiding
 banding artifacts. Default: 50.</p>
 
+
+<p style="margin-left:11%;"><b>&minus;noalphadither</b></p>
+
+<p style="margin-left:22%;">By default, quantized
+transparency planes are dithered during decompression, to
+smooth the gradients. This flag will prevent this
+dithering.</p>
+
+<p style="margin-left:11%;"><b>&minus;usebgcolor</b></p>
+
+<p style="margin-left:22%;">Fill transparent areas with the
+bitstream&rsquo;s own background color instead of
+checkerboard only. Default is white for non-animated
+images.</p>
+
 <table width="100%" border=0 rules="none" frame="void"
        cellspacing="0" cellpadding="0">
 <tr valign="top" align="left">
@@ -176,13 +191,24 @@ from <i>stdin</i> instead of a file.</p>
 
 <p style="margin-top: 1em" valign="top"><b>&rsquo;c&rsquo;</b></p> </td>
 <td width="7%"></td>
-<td width="43%">
+<td width="78%">
 
 
 <p style="margin-top: 1em" valign="top">Toggle use of color
 profile.</p> </td>
-<td width="35%">
-</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+
+<p style="margin-top: 1em" valign="top"><b>&rsquo;b&rsquo;</b></p> </td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em" valign="top">Toggle display of
+background color.</p></td>
 <tr valign="top" align="left">
 <td width="11%"></td>
 <td width="4%">
@@ -191,13 +217,24 @@ profile.</p> </td>
 
 <p style="margin-top: 1em" valign="top"><b>&rsquo;i&rsquo;</b></p> </td>
 <td width="7%"></td>
-<td width="43%">
+<td width="78%">
 
 
 <p style="margin-top: 1em" valign="top">Overlay file
 information.</p> </td>
-<td width="35%">
-</td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="4%">
+
+
+
+<p style="margin-top: 1em" valign="top"><b>&rsquo;d&rsquo;</b></p> </td>
+<td width="7%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em" valign="top">Disable blending
+and disposal process, for debugging purposes.</p></td>
 </table>
 
 <p style="margin-left:11%;"><b>&rsquo;q&rsquo; /
@@ -210,10 +247,10 @@ information.</p> </td>
 
 
 <p style="margin-left:11%; margin-top: 1em">Please report
-all bugs to our issue tracker:
-http://code.google.com/p/webp/issues <br>
+all bugs to the issue tracker:
+https://bugs.chromium.org/p/webp <br>
 Patches welcome! See this page to get started:
-http://www.webmproject.org/code/contribute/submitting-patches/</p>
+https://www.webmproject.org/code/contribute/submitting&minus;patches/</p>
 
 <a name="EXAMPLES"></a>
 <h2>EXAMPLES</h2>
@@ -228,10 +265,10 @@ vwebp &minus;&minus; &minus;&minus;&minus;picture.webp</p>
 <h2>AUTHORS</h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>vwebp</b>
-was written by the WebP team. <br>
+<p style="margin-left:11%; margin-top: 1em"><b>vwebp</b> is
+a part of libwebp and was written by the WebP team. <br>
 The latest source tree is available at
-http://www.webmproject.org/code</p>
+https://chromium.googlesource.com/webm/libwebp</p>
 
 <p style="margin-left:11%; margin-top: 1em">This manual
 page was written for the Debian project (and may be used by
@@ -244,8 +281,8 @@ others).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>dwebp</b>(1)
 <br>
-Please refer to http://developers.google.com/speed/webp/ for
-additional information.</p>
+Please refer to https://developers.google.com/speed/webp/
+for additional information.</p>
 <hr>
 </body>
 </html>

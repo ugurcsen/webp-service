@@ -2,4 +2,4 @@
 
 package main
 
-const cWebpBin = "bin/macos/bin/cwebp"
+const cWebpBin = "./bin/macos/bin/cwebp"

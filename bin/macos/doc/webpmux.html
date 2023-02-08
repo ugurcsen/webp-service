@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.19.2 -->
-<!-- CreationDate: Fri Sep 19 17:51:07 2014 -->
+<!-- CreationDate: Mon Dec 19 16:43:06 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -36,7 +36,9 @@
 
 
 <p style="margin-left:11%; margin-top: 1em">webpmux &minus;
-command line tool to create WebP Mux/container file.</p>
+create animated WebP files from non&minus;animated WebP
+images, extract frames from animated WebP images, and manage
+XMP/EXIF metadata and ICC profile.</p>
 
 <a name="SYNOPSIS"></a>
 <h2>SYNOPSIS</h2>
@@ -56,10 +58,13 @@ webpmux &minus;frame</b> <i>FRAME_OPTIONS</i> <b>[
 <p style="margin-left:23%;"><b>[ &minus;bgcolor</b>
 <i>BACKGROUND_COLOR</i> <b>] &minus;o</b> <i>OUTPUT</i></p>
 
-<p style="margin-left:11%;"><b>webpmux &minus;info</b>
-<i>INPUT</i> <b><br>
+<p style="margin-left:11%;"><b>webpmux &minus;duration</b>
+<i>DURATION OPTIONS</i> <b>[ &minus;duration ... ]</b>
+<i>INPUT</i> <b>&minus;o</b> <i>OUTPUT</i> <b><br>
+webpmux &minus;info</b> <i>INPUT</i> <b><br>
 webpmux [&minus;h|&minus;help] <br>
-webpmux &minus;version</b></p>
+webpmux &minus;version <br>
+webpmux argument_file_name</b></p>
 
 <a name="DESCRIPTION"></a>
 <h2>DESCRIPTION</h2>
@@ -69,8 +74,13 @@ webpmux &minus;version</b></p>
 page documents the <b>webpmux</b> command.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>webpmux</b>
-can be used to create a WebP container file and
-extract/strip relevant data from the container file.</p>
+can be used to create/extract from animated WebP files, as
+well as to add/extract/strip XMP/EXIF metadata and ICC
+profile. If a single file name (not starting with the
+character &rsquo;&minus;&rsquo;) is supplied as the
+argument, the command line arguments are actually tokenized
+from this file. This allows for easy scripting or using a
+large number of arguments.</p>
 
 <a name="OPTIONS"></a>
 <h2>OPTIONS</h2>
@@ -126,10 +136,29 @@ metadata.</p> </td>
 
 <p style="margin-left:11%;"><b>frame</b> <i>n</i></p>
 
-<p style="margin-left:22%;">Get nth frame.</p>
+<p style="margin-left:22%;">Get nth frame from an animated
+image. (n = 0 has a special meaning: last frame).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>SET_OPTIONS
 (&minus;set) <br>
+loop</b> <i>loop_count</i></p>
+
+<p style="margin-left:22%;">Set loop count on an animated
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where:
+&rsquo;loop_count&rsquo; must be in range [0, 65535].
+<b><br>
+bgcolor</b> <i>A,R,G,B</i></p>
+
+<p style="margin-left:22%;">Set the background color of the
+canvas on an animated file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">where:
+&rsquo;A&rsquo;, &rsquo;R&rsquo;, &rsquo;G&rsquo; and
+&rsquo;B&rsquo; are integers in the range 0 to 255
+specifying the Alpha, Red, Green and Blue component values
+respectively. <b><br>
 icc</b> <i>file.icc</i></p>
 
 <p style="margin-left:22%;">Set ICC profile.</p>
@@ -202,8 +231,50 @@ metadata.</p> </td>
 </table>
 
 
+<p style="margin-left:11%; margin-top: 1em"><b>DURATION_OPTIONS
+(&minus;duration)</b> <br>
+Amend the duration of a specific interval of frames. This
+option is only effective on animated WebP and has no effect
+on a single-frame file. <i><br>
+duration[,start[,end]]</i></p>
+
+<p style="margin-left:22%;">Where: <b><br>
+duration</b> is the duration for the interval in
+milliseconds (mandatory). Must be non-negative. <b><br>
+start</b> is the starting frame index of the interval
+(optional). <b><br>
+end</b> is the ending frame index (inclusive) of the
+interval (optional).</p>
+
+<p style="margin-left:11%;">The three typical usages of
+this option are:</p>
+
+<p style="margin-left:22%;"><b>-duration d</b> <br>
+set the duration to &rsquo;d&rsquo; for the whole animation.
+<b><br>
+-duration d,f</b> <br>
+set the duration of frame &rsquo;f&rsquo; to
+&rsquo;d&rsquo;. <b><br>
+-duration d,start,end</b> <br>
+set the duration to &rsquo;d&rsquo; for the whole
+[start,end] interval.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Note that the
+frames outside of the [start, end] interval will <br>
+remain untouched. <br>
+The &rsquo;end&rsquo; value &rsquo;0&rsquo; has the special
+meaning &rsquo;last frame of the animation&rsquo;.</p>
+
+<p style="margin-left:11%;"><i>Reminder:</i></p>
+
+<p style="margin-left:22%;">frame indexing starts at
+&rsquo;1&rsquo;.</p>
+
+
 <p style="margin-left:11%; margin-top: 1em"><b>FRAME_OPTIONS
-(&minus;frame)</b> <i><br>
+(&minus;frame)</b> <br>
+Create an animated WebP file from multiple
+(non&minus;animated) WebP images. <i><br>
 file_i +di[+xi+yi[+mi[bi]]]</i></p>
 
 <p style="margin-left:22%;">Where: &rsquo;file_i&rsquo; is
@@ -213,13 +284,13 @@ for this frame, &rsquo;di&rsquo; is the pause duration
 before next frame, &rsquo;mi&rsquo; is the dispose method
 for this frame (0 for NONE or 1 for BACKGROUND) and
 &rsquo;bi&rsquo; is the blending method for this frame (+b
-for BLEND or -b for NO_BLEND). Argument &rsquo;bi&rsquo; can
-be omitted and will default to +b (BLEND). Also,
-&rsquo;mi&rsquo; can be omitted if &rsquo;bi&rsquo; is
-omitted and will default to 0 (NONE). Finally, if
-&rsquo;mi&rsquo; and &rsquo;bi&rsquo; are omitted then
-&rsquo;xi&rsquo; and &rsquo;yi&rsquo; can be omitted and
-will default to +0+0.</p>
+for BLEND or &minus;b for NO_BLEND). Argument
+&rsquo;bi&rsquo; can be omitted and will default to +b
+(BLEND). Also, &rsquo;mi&rsquo; can be omitted if
+&rsquo;bi&rsquo; is omitted and will default to 0 (NONE).
+Finally, if &rsquo;mi&rsquo; and &rsquo;bi&rsquo; are
+omitted then &rsquo;xi&rsquo; and &rsquo;yi&rsquo; can be
+omitted and will default to +0+0.</p>
 
 <p style="margin-left:11%;"><b>&minus;loop</b> <i>n</i></p>
 
@@ -256,46 +327,79 @@ be valid.</p>
 
 
 <p style="margin-left:11%; margin-top: 1em">Please report
-all bugs to our issue tracker:
-http://code.google.com/p/webp/issues <br>
+all bugs to the issue tracker:
+https://bugs.chromium.org/p/webp <br>
 Patches welcome! See this page to get started:
-http://www.webmproject.org/code/contribute/submitting-patches/</p>
+https://www.webmproject.org/code/contribute/submitting&minus;patches/</p>
 
 <a name="EXAMPLES"></a>
 <h2>EXAMPLES</h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">webpmux
-&minus;set icc image_profile.icc in.webp &minus;o
-icc_container.webp <br>
+<p style="margin-left:11%; margin-top: 1em">Add ICC
+profile: <br>
+webpmux &minus;set icc image_profile.icc in.webp &minus;o
+icc_container.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Extract ICC
+profile: <br>
 webpmux &minus;get icc icc_container.webp &minus;o
-image_profile.icc <br>
+image_profile.icc</p>
+
+<p style="margin-left:11%; margin-top: 1em">Strip ICC
+profile: <br>
 webpmux &minus;strip icc icc_container.webp &minus;o
-without_icc.webp <br>
+without_icc.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Add XMP
+metadata: <br>
 webpmux &minus;set xmp image_metadata.xmp in.webp &minus;o
-xmp_container.webp <br>
+xmp_container.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Extract XMP
+metadata: <br>
 webpmux &minus;get xmp xmp_container.webp &minus;o
-image_metadata.xmp <br>
+image_metadata.xmp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Strip XMP
+metadata: <br>
 webpmux &minus;strip xmp xmp_container.webp &minus;o
-without_xmp.webp <br>
+without_xmp.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Add EXIF
+metadata: <br>
 webpmux &minus;set exif image_metadata.exif in.webp &minus;o
-exif_container.webp <br>
+exif_container.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Extract EXIF
+metadata: <br>
 webpmux &minus;get exif exif_container.webp &minus;o
-image_metadata.exif <br>
+image_metadata.exif</p>
+
+<p style="margin-left:11%; margin-top: 1em">Strip EXIF
+metadata: <br>
 webpmux &minus;strip exif exif_container.webp &minus;o
-without_exif.webp <br>
-webpmux &minus;frame anim_1.webp +100 &minus;frame
-anim_2.webp +100+50+50</p>
+without_exif.webp</p>
 
-<p style="margin-left:23%;">&minus;frame anim_2.webp
-+100+50+50+1+b &minus;loop 10 &minus;bgcolor
-255,255,255,255</p>
+<p style="margin-left:11%; margin-top: 1em">Create an
+animated WebP file from 3 (non&minus;animated) WebP images:
+<br>
+webpmux &minus;frame 1.webp +100 &minus;frame 2.webp
++100+50+50</p>
 
-<p style="margin-left:35%;">&minus;o
-anim_container.webp</p>
+<p style="margin-left:23%;">&minus;frame 3.webp
++100+50+50+1+b &minus;loop 10 &minus;bgcolor 255,255,255,255
+<br>
+&minus;o anim_container.webp</p>
 
-<p style="margin-left:23%;">webpmux &minus;get frame 2
-anim_container.webp &minus;o frame_2.webp <br>
+<p style="margin-left:11%; margin-top: 1em">Get the 2nd
+frame from an animated WebP file: <br>
+webpmux &minus;get frame 2 anim_container.webp &minus;o
+frame_2.webp</p>
+
+<p style="margin-left:11%; margin-top: 1em">Using
+&minus;get/&minus;set/&minus;strip with input file name
+starting with &rsquo;&minus;&rsquo;: <br>
 webpmux &minus;set icc image_profile.icc &minus;o
 icc_container.webp &minus;&minus;
 &minus;&minus;&minus;in.webp <br>
@@ -309,9 +413,9 @@ webpmux &minus;strip icc &minus;o without_icc.webp
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>webpmux</b>
-is written by the WebP team. <br>
+is a part of libwebp and was written by the WebP team. <br>
 The latest source tree is available at
-http://www.webmproject.org/code</p>
+https://chromium.googlesource.com/webm/libwebp</p>
 
 <p style="margin-left:11%; margin-top: 1em">This manual
 page was written by Vikas Arora
@@ -325,8 +429,8 @@ may be used by others).</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>cwebp</b>(1),
 <b>dwebp</b>(1), <b>gif2webp</b>(1) <br>
-Please refer to http://developers.google.com/speed/webp/ for
-additional information.</p>
+Please refer to https://developers.google.com/speed/webp/
+for additional information.</p>
 <hr>
 </body>
 </html>

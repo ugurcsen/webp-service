@@ -1,5 +1,5 @@
-<!-- Creator     : groff version 1.21 -->
-<!-- CreationDate: Mon Jul 28 19:46:48 2014 -->
+<!-- Creator     : groff version 1.22.4 -->
+<!-- CreationDate: Tue Dec 20 00:42:34 2022 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -24,7 +24,6 @@
 <a href="#SYNOPSIS">SYNOPSIS</a><br>
 <a href="#DESCRIPTION">DESCRIPTION</a><br>
 <a href="#OPTIONS">OPTIONS</a><br>
-<a href="#ADDITIONAL OPTIONS">ADDITIONAL OPTIONS</a><br>
 <a href="#BUGS">BUGS</a><br>
 <a href="#EXAMPLES">EXAMPLES</a><br>
 <a href="#AUTHORS">AUTHORS</a><br>
@@ -38,7 +37,7 @@
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">cwebp &minus;
+<p style="margin-left:11%; margin-top: 1em">cwebp -
 compress an image file to a WebP file</p>
 
 <h2>SYNOPSIS
@@ -47,8 +46,7 @@ compress an image file to a WebP file</p>
 
 
 <p style="margin-left:11%; margin-top: 1em"><b>cwebp</b>
-[<i>options</i>] <i>input_file &minus;o
-output_file.webp</i></p>
+[<i>options</i>] <i>input_file -o output_file.webp</i></p>
 
 <h2>DESCRIPTION
 <a name="DESCRIPTION"></a>
@@ -60,8 +58,8 @@ page documents the <b>cwebp</b> command.</p>
 
 <p style="margin-left:11%; margin-top: 1em"><b>cwebp</b>
 compresses an image using the WebP format. Input format can
-be either PNG, JPEG, TIFF, WebP or raw Y&rsquo;CbCr
-samples.</p>
+be either PNG, JPEG, TIFF, WebP or raw Y&rsquo;CbCr samples.
+Note: Animated PNG and WebP files are not supported.</p>
 
 <h2>OPTIONS
 <a name="OPTIONS"></a>
@@ -70,46 +68,89 @@ samples.</p>
 
 <p style="margin-left:11%; margin-top: 1em">The basic
 options are: <b><br>
-&minus;o</b> <i>string</i></p>
+-o</b> <i>string</i></p>
 
 <p style="margin-left:22%;">Specify the name of the output
 WebP file. If omitted, <b>cwebp</b> will perform compression
-but only report statistics. Using &quot;&minus;&quot; as
-output name will direct output to &rsquo;stdout&rsquo;.</p>
+but only report statistics. Using &quot;-&quot; as output
+name will direct output to &rsquo;stdout&rsquo;.</p>
 
-<p style="margin-left:11%;"><b>&minus;&minus;</b>
-<i>string</i></p>
+<p style="margin-left:11%;"><b>--</b> <i>string</i></p>
 
 <p style="margin-left:22%;">Explicitly specify the input
-file. This option is useful if the input file starts with an
-&rsquo;&minus;&rsquo; for instance. This option must appear
+file. This option is useful if the input file starts with a
+&rsquo;-&rsquo; for instance. This option must appear
 <b>last</b>. Any other options afterward will be
 ignored.</p>
 
-<p style="margin-left:11%;"><b>&minus;h,
-&minus;help</b></p>
+<p style="margin-left:11%;"><b>-h, -help</b></p>
 
 <p style="margin-left:22%;">A short usage summary.</p>
 
-<p style="margin-left:11%;"><b>&minus;H,
-&minus;longhelp</b></p>
+<p style="margin-left:11%;"><b>-H, -longhelp</b></p>
 
 <p style="margin-left:22%;">A summary of all the possible
 options.</p>
 
-<p style="margin-left:11%;"><b>&minus;version</b></p>
+<p style="margin-left:11%;"><b>-version</b></p>
 
 <p style="margin-left:22%;">Print the version number (as
 major.minor.revision) and exit.</p>
 
-<p style="margin-left:11%;"><b>&minus;q</b>
-<i>float</i></p>
+<p style="margin-left:11%;"><b>-lossless</b></p>
+
+<p style="margin-left:22%;">Encode the image without any
+loss. For images with fully transparent area, the invisible
+pixel values (R/G/B or Y/U/V) will be preserved only if the
+-exact option is used.</p>
+
+<p style="margin-left:11%;"><b>-near_lossless</b>
+<i>int</i></p>
+
+<p style="margin-left:22%;">Specify the level of
+near-lossless image preprocessing. This option adjusts pixel
+values to help compressibility, but has minimal impact on
+the visual quality. It triggers lossless compression mode
+automatically. The range is 0 (maximum preprocessing) to 100
+(no preprocessing, the default). The typical value is around
+60. Note that lossy with <b>-q 100</b> can at times yield
+better results.</p>
+
+<p style="margin-left:11%;"><b>-q</b> <i>float</i></p>
 
 <p style="margin-left:22%;">Specify the compression factor
-for RGB channels between 0 and 100. The default is 75.</p>
+for RGB channels between 0 and 100. The default is 75. <br>
+In case of lossy compression (default), a small factor
+produces a smaller file with lower quality. Best quality is
+achieved by using a value of 100. <br>
+In case of lossless compression (specified by the
+<b>-lossless</b> option), a small factor enables faster
+compression speed, but produces a larger file. Maximum
+compression is achieved by using a value of 100.</p>
 
-<p style="margin-left:11%;"><b>&minus;alpha_q</b>
-<i>int</i></p>
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-z</b> <i>int</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Switch on <b>lossless</b> compression mode with the
+specified level between 0 and 9, with level 0 being the
+fastest, 9 being the slowest. Fast mode produces larger file
+size than slower ones. A good default is <b>-z 6</b>. This
+option is actually a shortcut for some predefined settings
+for quality and method. If options <b>-q</b> or <b>-m</b>
+are subsequently used, they will invalidate the effect of
+this option.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-alpha_q</b> <i>int</i></p>
 
 <p style="margin-left:22%;">Specify the compression factor
 for alpha compression between 0 and 100. Lossless
@@ -117,50 +158,16 @@ compression of alpha is achieved using a value of 100, while
 the lower values result in a lossy compression. The default
 is 100.</p>
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
-
-
-<p><b>&minus;f</b> <i>int</i></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Specify the strength of the deblocking filter, between 0
-(no filtering) and 100 (maximum filtering). A value of 0
-will turn off any filtering. Higher value will increase the
-strength of the filtering process applied after decoding the
-picture. The higher the value the smoother the picture will
-appear. Typical values are usually in the range of 20 to
-50.</p> </td></tr>
-</table>
-
-<p style="margin-left:11%;"><b>&minus;preset</b>
+<p style="margin-left:11%;"><b>-preset</b>
 <i>string</i></p>
 
 <p style="margin-left:22%;">Specify a set of pre-defined
 parameters to suit a particular type of source material.
 Possible values are: <b>default</b>, <b>photo</b>,
 <b>picture</b>, <b>drawing</b>, <b>icon</b>, <b>text</b>.
-Since <b>&minus;preset</b> overwrites the other
-parameters&rsquo; values (except the <b>&minus;q</b> one),
-this option should preferably appear first in the order of
-the arguments.</p>
-
-<p style="margin-left:11%;"><b>&minus;sns</b>
-<i>int</i></p>
-
-<p style="margin-left:22%;">Specify the amplitude of the
-spatial noise shaping. Spatial noise shaping (or <b>sns</b>
-for short) refers to a general collection of built-in
-algorithms used to decide which area of the picture should
-use relatively less bits, and where else to better transfer
-these bits. The possible range goes from 0 (algorithm is
-off) to 100 (the maximal effect). The default value is
-80.</p>
+Since <b>-preset</b> overwrites the other parameters&rsquo;
+values (except the <b>-q</b> one), this option should
+preferably appear first in the order of the arguments.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -169,7 +176,7 @@ off) to 100 (the maximal effect). The default value is
 <td width="9%">
 
 
-<p><b>&minus;m</b> <i>int</i></p></td>
+<p><b>-m</b> <i>int</i></p></td>
 <td width="2%"></td>
 <td width="78%">
 
@@ -184,14 +191,25 @@ can result in faster processing time at the expense of
 larger file size and lower compression quality.</p></td></tr>
 </table>
 
-<p style="margin-left:11%;"><b>&minus;jpeg_like</b></p>
+<p style="margin-left:11%;"><b>-crop</b> <i>x_position
+y_position width height</i></p>
 
-<p style="margin-left:22%;">Change the internal parameter
-mapping to better match the expected size of JPEG
-compression. This flag will generally produce an output file
-of similar size to its JPEG equivalent (for the same
-<b>&minus;q</b> setting), but with less visual
-distortion.</p>
+<p style="margin-left:22%;">Crop the source to a rectangle
+with top-left corner at coordinates (<b>x_position</b>,
+<b>y_position</b>) and size <b>width</b> x <b>height</b>.
+This cropping area must be fully contained within the source
+rectangle. Note: the cropping is applied <i>before</i> any
+scaling.</p>
+
+<p style="margin-left:11%;"><b>-resize</b> <i>width
+height</i></p>
+
+<p style="margin-left:22%;">Resize the source to a
+rectangle with size <b>width</b> x <b>height</b>. If either
+(but not both) of the <b>width</b> or <b>height</b>
+parameters is 0, the value will be calculated preserving the
+aspect-ratio. Note: scaling is applied <i>after</i>
+cropping.</p>
 
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
@@ -200,17 +218,17 @@ distortion.</p>
 <td width="4%">
 
 
-<p><b>&minus;mt</b></p></td>
+<p><b>-mt</b></p></td>
 <td width="7%"></td>
-<td width="78%">
+<td width="70%">
 
 
-<p>Use multi-threading for encoding, if possible. This
-option is only effective when using lossy compression on a
-source with a transparency channel.</p></td></tr>
+<p>Use multi-threading for encoding, if possible.</p></td>
+<td width="8%">
+</td></tr>
 </table>
 
-<p style="margin-left:11%;"><b>&minus;low_memory</b></p>
+<p style="margin-left:11%;"><b>-low_memory</b></p>
 
 <p style="margin-left:22%;">Reduce memory usage of lossy
 encoding by saving four times the compressed size
@@ -223,6 +241,47 @@ features like number of partitions (forced to 1). Note that
 a more detailed report of bitstream size is printed by
 <b>cwebp</b> when using this option.</p>
 
+<p style="margin-left:11%; margin-top: 1em"><b>LOSSY
+OPTIONS</b> <br>
+These options are only effective when doing lossy encoding
+(the default, with or without alpha). <b><br>
+-size</b> <i>int</i></p>
+
+<p style="margin-left:22%;">Specify a target size (in
+bytes) to try and reach for the compressed output. The
+compressor will make several passes of partial encoding in
+order to get as close as possible to this target. If both
+<b>-size</b> and <b>-psnr</b> are used, <b>-size</b> value
+will prevail.</p>
+
+<p style="margin-left:11%;"><b>-psnr</b> <i>float</i></p>
+
+<p style="margin-left:22%;">Specify a target PSNR (in dB)
+to try and reach for the compressed output. The compressor
+will make several passes of partial encoding in order to get
+as close as possible to this target. If both <b>-size</b>
+and <b>-psnr</b> are used, <b>-size</b> value will
+prevail.</p>
+
+<p style="margin-left:11%;"><b>-pass</b> <i>int</i></p>
+
+<p style="margin-left:22%;">Set a maximum number of passes
+to use during the dichotomy used by options <b>-size</b> or
+<b>-psnr</b>. Maximum value is 10, default is 1. If options
+<b>-size</b> or <b>-psnr</b> were used, but <b>-pass</b>
+wasn&rsquo;t specified, a default value of &rsquo;6&rsquo;
+passes will be used.</p>
+
+<p style="margin-left:11%;"><b>-qrange</b> <i>int
+int</i></p>
+
+<p style="margin-left:22%;">Specifies the permissible
+interval for the quality factor. This is particularly useful
+when using multi-pass (<b>-size</b> or <b>-psnr</b>
+options). Default is 0 100. If the quality factor is outside
+this range, it will be clamped. If the minimum value must be
+less or equal to the maximum one.</p>
+
 <table width="100%" border="0" rules="none" frame="void"
        cellspacing="0" cellpadding="0">
 <tr valign="top" align="left">
@@ -230,7 +289,7 @@ a more detailed report of bitstream size is printed by
 <td width="4%">
 
 
-<p><b>&minus;af</b></p></td>
+<p><b>-af</b></p></td>
 <td width="7%"></td>
 <td width="78%">
 
@@ -240,41 +299,83 @@ additional time optimizing the filtering strength to reach a
 well-balanced quality.</p></td></tr>
 </table>
 
-<h2>ADDITIONAL OPTIONS
-<a name="ADDITIONAL OPTIONS"></a>
-</h2>
+<p style="margin-left:11%;"><b>-jpeg_like</b></p>
+
+<p style="margin-left:22%;">Change the internal parameter
+mapping to better match the expected size of JPEG
+compression. This flag will generally produce an output file
+of similar size to its JPEG equivalent (for the same
+<b>-q</b> setting), but with less visual distortion.</p>
+
+<p style="margin-left:11%;">Advanced options:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
 
 
-<p style="margin-left:11%; margin-top: 1em">More advanced
-options are: <b><br>
-&minus;sharpness</b> <i>int</i></p>
+<p><b>-f</b> <i>int</i></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Specify the strength of the deblocking filter, between 0
+(no filtering) and 100 (maximum filtering). A value of 0
+will turn off any filtering. Higher value will increase the
+strength of the filtering process applied after decoding the
+picture. The higher the value the smoother the picture will
+appear. Typical values are usually in the range of 20 to
+50.</p> </td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-sharpness</b>
+<i>int</i></p>
 
 <p style="margin-left:22%;">Specify the sharpness of the
 filtering (if used). Range is 0 (sharpest) to 7 (least
 sharp). Default is 0.</p>
 
-<p style="margin-left:11%;"><b>&minus;strong</b></p>
+<p style="margin-left:11%;"><b>-strong</b></p>
 
 <p style="margin-left:22%;">Use strong filtering (if
-filtering is being used thanks to the <b>&minus;f</b>
-option). Strong filtering is on by default.</p>
+filtering is being used thanks to the <b>-f</b> option).
+Strong filtering is on by default.</p>
 
-<p style="margin-left:11%;"><b>&minus;nostrong</b></p>
+<p style="margin-left:11%;"><b>-nostrong</b></p>
 
 <p style="margin-left:22%;">Disable strong filtering (if
-filtering is being used thanks to the <b>&minus;f</b>
-option) and use simple filtering instead.</p>
+filtering is being used thanks to the <b>-f</b> option) and
+use simple filtering instead.</p>
 
-<p style="margin-left:11%;"><b>&minus;segments</b>
-<i>int</i></p>
+<p style="margin-left:11%;"><b>-sharp_yuv</b></p>
+
+<p style="margin-left:22%;">Use more accurate and sharper
+RGB-&gt;YUV conversion if needed. Note that this process is
+slower than the default &rsquo;fast&rsquo; RGB-&gt;YUV
+conversion.</p>
+
+<p style="margin-left:11%;"><b>-sns</b> <i>int</i></p>
+
+<p style="margin-left:22%;">Specify the amplitude of the
+spatial noise shaping. Spatial noise shaping (or <b>sns</b>
+for short) refers to a general collection of built-in
+algorithms used to decide which area of the picture should
+use relatively less bits, and where else to better transfer
+these bits. The possible range goes from 0 (algorithm is
+off) to 100 (the maximal effect). The default value is
+50.</p>
+
+<p style="margin-left:11%;"><b>-segments</b> <i>int</i></p>
 
 <p style="margin-left:22%;">Change the number of partitions
 to use during the segmentation of the sns algorithm.
 Segments should be in range 1 to 4. Default value is 4. This
 option has no effect for methods 3 and up, unless
-<b>&minus;low_memory</b> is used.</p>
+<b>-low_memory</b> is used.</p>
 
-<p style="margin-left:11%;"><b>&minus;partition_limit</b>
+<p style="margin-left:11%;"><b>-partition_limit</b>
 <i>int</i></p>
 
 <p style="margin-left:22%;">Degrade quality by limiting the
@@ -301,72 +402,100 @@ meet the 512k constraint, one should use less segments in
 order to save more header bits per macroblock. See the
 <b>-segments</b> option.</p>
 
-<p style="margin-left:11%;"><b>&minus;size</b>
-<i>int</i></p>
+<p style="margin-left:11%; margin-top: 1em"><b>LOGGING
+OPTIONS</b> <br>
+These options control the level of output:</p>
 
-<p style="margin-left:22%;">Specify a target size (in
-bytes) to try and reach for the compressed output.
-Compressor will make several pass of partial encoding in
-order to get as close as possible to this target.</p>
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
 
-<p style="margin-left:11%;"><b>&minus;psnr</b>
-<i>float</i></p>
 
-<p style="margin-left:22%;">Specify a target PSNR (in dB)
-to try and reach for the compressed output. Compressor will
-make several pass of partial encoding in order to get as
-close as possible to this target.</p>
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
 
-<p style="margin-left:11%;"><b>&minus;pass</b>
-<i>int</i></p>
 
-<p style="margin-left:22%;">Set a maximum number of passes
-to use during the dichotomy used by options
-<b>&minus;size</b> or <b>&minus;psnr</b>. Maximum value is
-10.</p>
+<p>Print extra information (encoding time in
+particular).</p> </td></tr>
+</table>
 
-<p style="margin-left:11%;"><b>&minus;resize</b> <i>width
-height</i></p>
+<p style="margin-left:11%;"><b>-print_psnr</b></p>
 
-<p style="margin-left:22%;">Resize the source to a
-rectangle with size <b>width</b> x <b>height</b>. If either
-(but not both) of the <b>width</b> or <b>height</b>
-parameters is 0, the value will be calculated preserving the
-aspect-ratio.</p>
+<p style="margin-left:22%;">Compute and report average PSNR
+(Peak-Signal-To-Noise ratio).</p>
 
-<p style="margin-left:11%;"><b>&minus;crop</b>
-<i>x_position y_position width height</i></p>
+<p style="margin-left:11%;"><b>-print_ssim</b></p>
 
-<p style="margin-left:22%;">Crop the source to a rectangle
-with top-left corner at coordinates (<b>x_position</b>,
-<b>y_position</b>) and size <b>width</b> x <b>height</b>.
-This cropping area must be fully contained within the source
-rectangle.</p>
+<p style="margin-left:22%;">Compute and report average SSIM
+(structural similarity metric, see
+https://en.wikipedia.org/wiki/SSIM for additional
+details).</p>
 
-<p style="margin-left:11%;"><b>&minus;s</b> <i>width
-height</i></p>
+<p style="margin-left:11%;"><b>-print_lsim</b></p>
+
+<p style="margin-left:22%;">Compute and report local
+similarity metric (sum of lowest error amongst the
+collocated pixel neighbors).</p>
+
+<p style="margin-left:11%;"><b>-progress</b></p>
+
+<p style="margin-left:22%;">Report encoding progress in
+percent.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-quiet</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Do not print anything.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>-short</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>Only print brief information (output file size and PSNR)
+for testing purposes.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-map</b> <i>int</i></p>
+
+<p style="margin-left:22%;">Output additional ASCII-map of
+encoding information. Possible map values range from 1 to 6.
+This is only meant to help debugging.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ADDITIONAL
+OPTIONS</b> <br>
+More advanced options are: <b><br>
+-s</b> <i>width height</i></p>
 
 <p style="margin-left:22%;">Specify that the input file
 actually consists of raw Y&rsquo;CbCr samples following the
 ITU-R BT.601 recommendation, in 4:2:0 linear format. The
 luma plane has size <b>width</b> x <b>height</b>.</p>
 
-<p style="margin-left:11%;"><b>&minus;map</b>
-<i>int</i></p>
+<p style="margin-left:11%;"><b>-pre</b> <i>int</i></p>
 
-<p style="margin-left:22%;">Output additional ASCII-map of
-encoding information. Possible map values range from 1 to 6.
-This is only meant to help debugging.</p>
-
-<p style="margin-left:11%;"><b>&minus;pre</b>
-<i>int</i></p>
-
-<p style="margin-left:22%;">Specify some pre-processing
+<p style="margin-left:22%;">Specify some preprocessing
 steps. Using a value of &rsquo;2&rsquo; will trigger
 quality-dependent pseudo-random dithering during
 RGBA-&gt;YUVA conversion (lossy compression only).</p>
 
-<p style="margin-left:11%;"><b>&minus;alpha_filter</b>
+<p style="margin-left:11%;"><b>-alpha_filter</b>
 <i>string</i></p>
 
 <p style="margin-left:22%;">Specify the predictive
@@ -378,10 +507,10 @@ filtering is performed using four possible predictions
 (none, horizontal, vertical, gradient). The
 &rsquo;best&rsquo; mode will try each mode in turn and pick
 the one which gives the smaller size. The &rsquo;fast&rsquo;
-mode will just try to form an a-priori guess without testing
+mode will just try to form an a priori guess without testing
 all modes.</p>
 
-<p style="margin-left:11%;"><b>&minus;alpha_method</b>
+<p style="margin-left:11%;"><b>-alpha_method</b>
 <i>int</i></p>
 
 <p style="margin-left:22%;">Specify the algorithm used for
@@ -389,14 +518,23 @@ alpha compression: 0 or 1. Algorithm 0 denotes no
 compression, 1 uses WebP lossless format for compression.
 The default is 1.</p>
 
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
 
-<p style="margin-left:11%;"><b>&minus;alpha_cleanup</b></p>
 
-<p style="margin-left:22%;">Modify unseen RGB values under
-fully transparent area, to help compressibility. The default
-is off.</p>
+<p><b>-exact</b></p></td>
+<td width="2%"></td>
+<td width="78%">
 
-<p style="margin-left:11%;"><b>&minus;blend_alpha</b>
+
+<p>Preserve RGB values in transparent area. The default is
+off, to help compressibility.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-blend_alpha</b>
 <i>int</i></p>
 
 <p style="margin-left:22%;">This option blends the alpha
@@ -404,24 +542,18 @@ channel (if present) with the source using the background
 color specified in hexadecimal as 0xrrggbb. The alpha
 channel is afterward reset to the opaque value 255.</p>
 
-<p style="margin-left:11%;"><b>&minus;noalpha</b></p>
+<p style="margin-left:11%;"><b>-noalpha</b></p>
 
 <p style="margin-left:22%;">Using this option will discard
 the alpha channel.</p>
 
-<p style="margin-left:11%;"><b>&minus;lossless</b></p>
-
-<p style="margin-left:22%;">Encode the image without any
-loss.</p>
-
-<p style="margin-left:11%;"><b>&minus;hint</b>
-<i>string</i></p>
+<p style="margin-left:11%;"><b>-hint</b> <i>string</i></p>
 
 <p style="margin-left:22%;">Specify the hint about input
 image type. Possible values are: <b>photo</b>,
 <b>picture</b> or <b>graph</b>.</p>
 
-<p style="margin-left:11%;"><b>&minus;metadata</b>
+<p style="margin-left:11%;"><b>-metadata</b>
 <i>string</i></p>
 
 <p style="margin-left:22%;">A comma separated list of
@@ -439,74 +571,14 @@ input format may not support all combinations.</p>
 <td width="9%">
 
 
-<p><b>&minus;noasm</b></p></td>
+<p><b>-noasm</b></p></td>
 <td width="2%"></td>
-<td width="78%">
+<td width="53%">
 
 
-<p>Disable all assembly optimizations.</p></td></tr>
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
-
-
-<p><b>&minus;v</b></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Print extra information (encoding time in
-particular).</p> </td></tr>
-</table>
-
-<p style="margin-left:11%;"><b>&minus;print_psnr</b></p>
-
-<p style="margin-left:22%;">Compute and report average PSNR
-(Peak-Signal-To-Noise ratio).</p>
-
-<p style="margin-left:11%;"><b>&minus;print_ssim</b></p>
-
-<p style="margin-left:22%;">Compute and report average SSIM
-(structural similarity metric, see
-http://en.wikipedia.org/wiki/SSIM for additional
-details).</p>
-
-<p style="margin-left:11%;"><b>&minus;print_lsim</b></p>
-
-<p style="margin-left:22%;">Compute and report local
-similarity metric (sum of lowest error amongst the
-collocated pixel neighbors).</p>
-
-<p style="margin-left:11%;"><b>&minus;progress</b></p>
-
-<p style="margin-left:22%;">Report encoding progress in
-percent.</p>
-
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
-
-
-<p><b>&minus;quiet</b></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Do not print anything.</p></td></tr>
-<tr valign="top" align="left">
-<td width="11%"></td>
-<td width="9%">
-
-
-<p><b>&minus;short</b></p></td>
-<td width="2%"></td>
-<td width="78%">
-
-
-<p>Only print brief information (output file size and PSNR)
-for testing purpose.</p></td></tr>
+<p>Disable all assembly optimizations.</p></td>
+<td width="25%">
+</td></tr>
 </table>
 
 <h2>BUGS
@@ -515,34 +587,33 @@ for testing purpose.</p></td></tr>
 
 
 <p style="margin-left:11%; margin-top: 1em">Please report
-all bugs to our issue tracker:
-http://code.google.com/p/webp/issues <br>
+all bugs to the issue tracker:
+https://bugs.chromium.org/p/webp <br>
 Patches welcome! See this page to get started:
-http://www.webmproject.org/code/contribute/submitting-patches/</p>
+https://www.webmproject.org/code/contribute/submitting-patches/</p>
 
 <h2>EXAMPLES
 <a name="EXAMPLES"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em">cwebp &minus;q
-50 -lossless picture.png &minus;o picture_lossless.webp <br>
-cwebp &minus;q 70 picture_with_alpha.png &minus;o
+<p style="margin-left:11%; margin-top: 1em">cwebp -q 50
+-lossless picture.png -o picture_lossless.webp <br>
+cwebp -q 70 picture_with_alpha.png -o
 picture_with_alpha.webp <br>
-cwebp &minus;sns 70 &minus;f 50 &minus;size 60000
-picture.png &minus;o picture.webp <br>
-cwebp &minus;o picture.webp &minus;&minus;
-&minus;&minus;&minus;picture.png</p>
+cwebp -sns 70 -f 50 -size 60000 picture.png -o picture.webp
+<br>
+cwebp -o picture.webp -- ---picture.png</p>
 
 <h2>AUTHORS
 <a name="AUTHORS"></a>
 </h2>
 
 
-<p style="margin-left:11%; margin-top: 1em"><b>cwebp</b>
-was written by the WebP team. <br>
+<p style="margin-left:11%; margin-top: 1em"><b>cwebp</b> is
+a part of libwebp and was written by the WebP team. <br>
 The latest source tree is available at
-http://www.webmproject.org/code</p>
+https://chromium.googlesource.com/webm/libwebp</p>
 
 <p style="margin-left:11%; margin-top: 1em">This manual
 page was written by Pascal Massimino
@@ -557,8 +628,8 @@ page was written by Pascal Massimino
 
 <p style="margin-left:11%; margin-top: 1em"><b>dwebp</b>(1),
 <b>gif2webp</b>(1) <br>
-Please refer to http://developers.google.com/speed/webp/ for
-additional information.</p>
+Please refer to https://developers.google.com/speed/webp/
+for additional information.</p>
 <hr>
 </body>
 </html>
