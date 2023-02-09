@@ -35,10 +35,6 @@ func main() {
 	}
 	log.Println("file size limit: ", fileSizeLimit>>10, "KB")
 
-	// Starting server
-	os.RemoveAll("./cache")
-	os.Mkdir("./cache", 0755)
-
 	crs := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,

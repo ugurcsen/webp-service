@@ -3,5 +3,5 @@ This is a simple web service that converts images to WebP format. It is written 
 
 ## Installation
 ```shell
-docker build -t webp-converter . && docker run -d -p 8080:8080 webp-converter
+DOCKER_BUILDKIT=1 docker build -t webp-converter . && docker run -d -p 8080:8080 webp-converter
 ```
