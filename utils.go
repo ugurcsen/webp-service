@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"github.com/kataras/iris/v12"
@@ -19,14 +18,7 @@ func throwInternalError(ctx iris.Context, err error) {
 }
 
 func getImageFromUrl(url *url.URL, writer io.Writer, limit int64) error {
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url.String(), &bytes.Buffer{})
-
-	if err != nil {
-		return err
-	}
-
-	res, err := client.Do(req)
+	res, err := http.Get(url.String())
 	if err != nil {
 		return err
 	}
