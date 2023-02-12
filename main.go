@@ -42,6 +42,7 @@ func main() {
 
 	app := iris.Default()
 	app.Use(crs)
+	app.Use(iris.Compression)
 	app.Get("/", webpConverter)
 	app.Listen(":" + port)
 }
